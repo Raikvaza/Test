@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import Pagination from "./Pagination";
-import { useSelector } from "react-redux";
-
+import SearchBar from "./SearchBar";
+import { fetchStockReportsAsync } from "../../features/store/slices/stockSlice";
+import { useDispatch, useSelector } from "react-redux";
 const tableData = [
+  "ID",
   "Date",
   "Open bid",
   "Close bid",
@@ -12,9 +15,40 @@ const tableData = [
 ];
 
 const Table = () => {
-  const reports = useSelector((state) => state.stockReports.reports);
-  const loading = useSelector((state) => state.stockReports.loading);
-  const error = useSelector((state) => state.stockReports.error);
+  const dispatch = useDispatch();
+  const { reports, loading, error, reportsFetched } = useSelector(
+    (state) => state.stockReports
+  );
+  const { details } = useSelector((state) => state.companyData);
+  useEffect(() => {
+    if (details.symbol && !reportsFetched) {
+      // console.log(details.symbol);
+
+      dispatch(fetchStockReportsAsync(details.symbol));
+    }
+  }, [details.symbol, reportsFetched]);
+  if (loading) {
+    return (
+      <div
+        className="
+            h-full 
+            w-full 
+            flex 
+            rounded-xl 
+            bg-white 
+            flex-col 
+            items-center 
+            justify-evenly 
+            "
+      >
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   // State to keep track of current page
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,27 +60,61 @@ const Table = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  // Slice the reports array to display only items for the current page
+  // Display only items for the current page
   const displayedReports = reports.slice(startIndex, endIndex);
-
+  // Fill empty rows to reach the desired row count
+  const emptyRowCount = Math.max(itemsPerPage - displayedReports.length, 0);
+  const emptyRows = Array.from({ length: emptyRowCount }, (_, index) => (
+    <tr
+      key={index}
+      className="odd:bg-gray-200 
+        "
+    >
+      {tableData.map((_, colIndex) => (
+        <td key={colIndex}>-</td>
+      ))}
+    </tr>
+  ));
   return (
     <div
       className="
             h-full 
             w-full 
-            flex 
-            rounded-xl 
-            bg-amber-200 
+            flex  
             flex-col 
             items-center 
             justify-evenly 
-            overflow-auto"
+            "
     >
-      <table className="w-full flex-1 table-auto">
-        <thead>
+      <SearchBar />
+      <table
+        className="
+          w-full
+          flex-1
+          table-auto
+          shadow-2xl
+          "
+      >
+        {/* TABLE HEADER */}
+        <thead
+          className="
+            bg-brown-gold
+            border-[1px]
+            border-black
+          "
+        >
           <tr>
             {tableData.map((value, index) => (
-              <th key={index} className="bg-gray-200 p-2">
+              <th
+                key={index}
+                className=" 
+                  p-2
+                  font-mono
+                  text-lg 
+                  font-semibold
+                  text-white  
+                "
+              >
                 {value}
               </th>
             ))}
@@ -54,15 +122,82 @@ const Table = () => {
         </thead>
         <tbody className="text-center">
           {displayedReports.map((report, index) => (
-            <tr key={index}>
-              <td>{report.date}</td>
-              <td>{report.open}</td>
-              <td>{report.close}</td>
-              <td>{report.high}</td>
-              <td>{report.low}</td>
-              <td>{report.changePercent}</td>
+            <tr
+              key={index}
+              className="
+              odd:bg-gray-200 
+              hover:bg-white
+                hover:cursor-pointer
+                border-l-[1px]
+                border-black
+              "
+            >
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {index}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.date}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.open}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.close}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.high}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.low}
+              </td>
+              <td
+                className="
+                  border-r-[1px]
+                  border-b-[1px]
+                  border-black
+                "
+              >
+                {report.changePercent}
+              </td>
             </tr>
           ))}
+          {emptyRows}
         </tbody>
       </table>
 

@@ -4,9 +4,8 @@ import { createRoot } from "react-dom/client";
 import store from "./src/features/store/store";
 import { Provider } from "react-redux";
 import "./index.css";
-// Import all of Bootstrap's JS
 const container = document.getElementById("root");
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
+const root = createRoot(container);
 root.render(
   <Provider store={store}>
     <App />

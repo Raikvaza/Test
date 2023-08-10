@@ -1,58 +1,37 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchStockReportsAsync } from "../features/store/slices/stockSlice";
-import TableRow from "../components/TableRow";
 import Table from "../components/Table/Table";
 import Aside from "../components/Aside/Aside";
 import Graph from "../components/Graph/Graph";
-
+import Appbar from "../components/Appbar/Appbar";
 const LandingPage = () => {
-  const dispatch = useDispatch();
-  const { reports, loading, error } = useSelector(
-    (state) => state.stockReports
-  );
-
-  useEffect(() => {
-    dispatch(fetchStockReportsAsync());
-  }, [dispatch]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     // CONTAINER
     <div
       className="
-            h-screen
             w-screen
+            min-h-screen
             flex
             flex-col
             justify-center
             items-center
+            bg-white-gold
             "
     >
       {/* APPBAR / HEADER */}
       <div
         className="
-            w-full
-            h-[10%]
-            bg-blue-500"
+            w-full h-24
+            shadow-lg
+            "
       >
-        HEADER
+        <Appbar />
       </div>
       {/* BODY CONTAINER */}
       <div
         className="
-            min-h-[80%]
-            min-w-[95%]
+            min-h-[80vh]
+            w-[95%]
             m-4
             flex
-            bg-black
             flex-row 
             justify-evenly
             items-stretch
@@ -63,7 +42,6 @@ const LandingPage = () => {
         <div
           className="
                 flex-1
-                bg-blue-300
             "
         >
           <Table />
@@ -71,7 +49,6 @@ const LandingPage = () => {
         {/* RIGHT BLOCK */}
         <div
           className="
-                bg-red-400
                 flex-1
                 flex
                 flex-col
@@ -89,11 +66,18 @@ const LandingPage = () => {
       <div
         className="
                 w-full
-                h-[10%]
-                bg-green-200
-                "
+                h-32
+                flex
+                items-center
+                font-sans
+                font-extrabold
+                text-2xl
+                text-white-gold
+                justify-center
+                bg-dark-gold
+        "
       >
-        FOOTER
+        USELESS FOOTER
       </div>
     </div>
   );

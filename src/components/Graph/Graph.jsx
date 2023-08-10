@@ -1,15 +1,23 @@
 const Graph = () => {
   return (
+    //TODO Make a line grah based on the fetched data
     <div
       className="
-      w-[640px]
-      h-96 
+      w-[768px] 
+        h-96
       rounded-xl
       border-[2px]
       border-black
-      bg-green-200
-          "
-    ></div>
+      bg-brown-gold
+      text-white-gold
+      text-4xl
+      flex
+      items-center
+      justify-center
+      "
+    >
+      POTENTIAL CHART OR GRAPH
+    </div>
   );
 };
 

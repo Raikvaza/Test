@@ -1,7 +1,6 @@
 "use strict";
 const path = require("path");
-/*We are basically telling webpack to take index.js from entry. Then check for all file extensions in resolve. 
-After that apply all the rules in module.rules and produce the output and place it in main.js in the public folder.*/
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
@@ -24,8 +23,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, //kind of file extension this rule should look for and apply in test
-        exclude: /node_modules/, //folder to be excluded
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
         },
@@ -36,4 +35,5 @@ module.exports = {
       },
     ],
   },
+  plugins: [new Dotenv({})],
 };
