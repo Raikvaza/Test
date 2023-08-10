@@ -1,5 +1,5 @@
 //YOUR API KEY HERE
-const API_KEY = "pk_bc7dc16216b34e448029c36f62f05f7a";
+const API_KEY = "МЕСТО ДЛЯ КЛЮЧА";
 // TODO: Organize the code into separate files
 //Fetch selected company data
 const fetchCompanyData = async (symbol) => {
